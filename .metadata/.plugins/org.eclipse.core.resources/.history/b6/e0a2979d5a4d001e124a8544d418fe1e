@@ -1,0 +1,202 @@
+package org.generetion;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.UUID;
+
+public class Cajero { // nombre de clase
+	public static void main(String[] args) {
+		try {
+			Scanner leer = new Scanner(System.in);
+			int menu = 0;
+			System.out.println("CAJERO AUTOMATICO");// Imprime bienvenida al cajero
+			System.out.println("Bienvenido");
+
+			// Crear instancia
+			Cuenta cuenta = new Cuenta("Titular de la cuenta", 10000);
+			do {
+				System.out.println("Selecciona una opcion");
+				System.out.println("	1. RETIRAR EFECTIVO");
+				System.out.println("	2. DEPOSITAR EFECTIVO");
+				System.out.println("	3. CONSULTA SALDO");
+				System.out.println("	4. QUEJAS");
+				System.out.println("	5. ULTIMOS MOVIMIENTOS");
+				System.out.println("	9. SALIR");
+				menu = leer.nextInt();
+				switch (menu) {
+
+				case 1:
+					System.out.println("Retirar Efectivo");
+					System.out.println("Ingresa el monto a retirar");
+					float withdrawAmount = leer.nextFloat();
+					cuenta.withdraw(withdrawAmount);
+					break;
+				case 2:
+					System.out.println("Depositar Efectivo");
+					System.out.println("Ingresa el monto a depositar");
+					float depositAmount = leer.nextFloat();
+					cuenta.deposit(depositAmount);
+					break;
+				case 3:
+					cuenta.checkBalance();
+					break;
+				case 4:
+					cuenta.complaint();
+					break;
+				case 5:
+					cuenta.bankingTransactions();
+					break;
+				case 9:
+					System.out.println("\n Gracias por usar el cajero");
+					break;
+				default:
+					System.out.println("Error, selecciona una opción valida");
+				}
+				System.out.println("");
+
+			} while (menu != 9);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+
+	}
+
+}
+
+class Movements {
+	private String id;
+	private LocalDateTime date;
+	private String type;
+	private double amount;
+
+	Movements(String type, double amount) {
+		this.id = UUID.randomUUID().toString();
+		this.date = LocalDateTime.now();
+		this.type = type;
+		this.amount = amount;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(float amount) {
+		this.amount = amount;
+	}
+
+}
+
+class Cuenta {
+	private String accountHolder;
+	private static double balance;
+	private ArrayList<Movements> lastMovements = new ArrayList<>();
+	private String answer;
+	private Scanner leer = new Scanner(System.in);
+	private String accountType;
+	private double chequesBalance;
+	
+	public Cuenta(String accountHolder, double balance) {
+		this.accountHolder = accountHolder;
+		this.balance = balance;
+	}
+
+	public void withdraw(double amount) {
+		System.out.println("Saldo disponible para retirar: $" + balance);
+
+		if (amount <= 0) {
+			System.out.println("\nMonto inválido, monto debe ser mayor a 0");
+		} else if (amount > balance) {
+			System.out.println("\nMonto inválido, monto mayor al disponible");
+		} else if (amount % 50 != 0) {
+			System.out.println("\nSolo se permiten retiros de multiplos de $50.00");
+		} else {
+			System.out.println("Saldo disponible para retirar: $" + balance);
+			System.out.println("¿Deasea donar $200 para la graduacón de CH30? \n (Sí/No)");
+			answer = leer.next().toLowerCase();
+			if (answer.equals("Si")) {
+				if (balance >= 200) {
+					balance -= 200;
+					System.out.println("Gracias por tu donación, Se han retirado $200.");
+				} else {
+					System.out.println("No cuentas con el saldo suficiente para donar");
+				}
+
+			} else if (answer.equals("No")) {
+				balance -= amount;
+				lastMovements.add(new Movements("Retiro", amount));
+				System.out.println("\nOperación Exitosa");
+			} else {
+				System.out.println("Respuesta inválida. Se realizará el retiro.");
+				balance -= amount;
+				lastMovements.add(new Movements("Retiro", amount));
+				System.out.println("\nOperación Exitosa");
+			}
+
+		}
+
+	}
+
+	public void deposit(double amount) {
+		if (amount <= 0) {
+			System.out.println("\nError, por favor ingrese una cantidad válida");
+		} else {
+			double roundedAmount = Math.round(amount * 100.0)/ 100.0;
+			
+			if(accountType.equals("Cuenta de Cheques")) {
+				
+				chequesBalance += roundedAmount;
+				lastMovements.add(new Movements ("Deposito a Cuenta de Cheques", roundedAmount));
+			} else {
+				System.out.println("Tipo de cuenta invalido");
+				return;
+			}
+			System.out.println("Operacion exitosa");
+			
+		}
+	}
+
+	public static void checkBalance() {
+		System.out.println("Saldo disponible: $" + balance);
+	}
+
+	public void complaint() {
+		System.out.println("No disponible, intente más tarde");
+	}
+
+	public void bankingTransactions() {
+		for (Movements movimiento : lastMovements) {
+			System.out.println("ID: " + movimiento.getId());
+			System.out.println("Fecha: " + movimiento.getDate());
+			System.out.println("Tipo: " + movimiento.getType());
+			System.out.println("Monto: $" + movimiento.getAmount());
+			System.out.println("Sin Movimientos al momento");
+		}
+	}
+
+}

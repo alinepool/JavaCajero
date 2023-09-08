@@ -1,0 +1,32 @@
+package org.generetion;
+
+public class Sistem {
+	
+	//Atributos clase
+	
+	
+	static void retirar() {
+		
+	}
+	
+	static void depositar() {
+		
+	}
+	
+	static void consulta() {
+		
+	}
+	
+	static void quejas() {
+		
+	}
+	
+	static void movimientos() {
+		
+	}
+	
+	
+	
+	
+	
+}

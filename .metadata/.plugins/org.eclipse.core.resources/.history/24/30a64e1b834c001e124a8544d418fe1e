@@ -1,0 +1,98 @@
+package org.generetion;
+
+import java.util.Scanner;
+
+public class PracticaCajero {
+
+	public static void main(String[] args) {
+		
+		
+		
+			System.out.println("CAJERO AUTOMATICO");//Imprime bienvenida al cajero
+			System.out.println("Bienvenido");
+			Scanner leer = new Scanner(System.in);
+			
+			//System.out.println("Ingresa tu tarjeta e Identificate");
+			//String tarjeta = leer.next();
+			//System.out.println("Ingresa tu NIP");
+			//String nip = leer.next();
+			if(nip.equals("1234")) { //compara nip con equals
+				
+				double balance = 10000; //se declara balance(Saldo)
+				
+				String menu = "0";//opciones de menu
+				
+				while (!menu.equals("9")) { //compara todas las opciones
+					System.out.println("\n\n CAJERO BIENESTAR");
+					System.out.println("1. RETIRAR EFECTIVO");
+					System.out.println("2. DEPOSITAR EFECTIVO");
+					System.out.println("3. CONSULTA SALDO");
+					System.out.println("4. QUEJAS");
+					System.out.println("5. ULTIMOS MOVIMIENTOS");
+					System.out.println("6. ERROR");
+					System.out.println("7. ERROR");
+					System.out.println("8. ERROR");
+					System.out.println("9. SALIR");
+					menu = leer.next();
+					
+					
+					switch (menu) {
+					case "1": {
+						System.out.println("Retirar Efectivo");
+						double cash = leer.nextDouble();
+						if(cash <= balance) {
+							balance = balance - cash;
+						} else {
+							System.out.println("No cuentas con suficiente saldo");
+						}
+						break;
+					}
+					case "2": {
+						System.out.println("Depositar Efectivo");
+						System.out.println("Ingresa el Monto a depositar");
+						double deposit = leer.nextDouble();
+						if(deposit > 0) {
+							balance = balance + deposit;
+						}
+						else {
+						System.out.println("Error, ingrese una cifra valida");
+						}
+						break;
+					}
+					case "3": {
+						System.out.println("El saldo total de tu cuenta es: " + Double.toString(balance)); 
+						break;
+					}
+					case "4": {
+						
+						break;
+					}
+					case "5": {
+						
+						break;
+					}
+					case "6": {
+						
+					}
+					case "7": {
+						
+						break;
+					}
+					case "8": {
+						
+						break;
+					}
+					case "9": {
+						System.out.println("Hasta pronto");
+					}
+						break;
+
+					default:
+						break;
+					}
+				}
+			}
+				
+			}
+
+}
